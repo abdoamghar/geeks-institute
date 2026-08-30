@@ -25,7 +25,7 @@ cake = f"""{"i" * candles:^23}
 
 print(cake)
 
-# Bonus: check if birth year was a leap year
+# check if birth year was a leap year
 if birthdate.year % 4 == 0 and (birthdate.year % 100 != 0 or birthdate.year % 400 == 0):
     print()
     print(cake)
