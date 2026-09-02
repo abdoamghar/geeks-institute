@@ -1,5 +1,5 @@
-import time
 import os
+import time
 
 
 class Cell:
@@ -11,91 +11,116 @@ class Game:
     def __init__(self, rows, cols):
         self.rows = rows
         self.cols = cols
+        self.grid = [[Cell() for _ in range(cols)] for _ in range(rows)]
 
-        self.grid = [
-            [Cell() for _ in range(cols)]
-            for _ in range(rows)
-        ]
+    def add_pattern(self, pattern, row, col):
+        for r, c in pattern:
+            if 0 <= row + r < self.rows and 0 <= col + c < self.cols:
+                self.grid[row + r][col + c].alive = True
 
     def display(self, generation):
-        print(f"╔{'══' * self.cols}╗")
-        print(f"║ Generation: {generation:<{self.cols * 2 - 12}}║")
+        os.system("cls" if os.name == "nt" else "clear")
+
+        print(f"Conway's Game of Life - R-Pentomino")
+        print(f"Generation: {generation}\n")
+
+        print("┌" + "───" * self.cols + "┐")
 
         for row in self.grid:
-            print("║" + "".join("██" if cell.alive else "  " for cell in row) + "║")
+            print("│" + "".join(
+                "███" if cell.alive else "   "
+                for cell in row
+            ) + "│")
 
-        print(f"╚{'══' * self.cols}╝")
-        
-    def set_cell(self, row, col):
-        self.grid[row][col].alive = True
+        print("└" + "───" * self.cols + "┘")
 
     def count_neighbors(self, row, col):
         count = 0
 
-        for row_change in [-1, 0, 1]:
-            for col_change in [-1, 0, 1]:
-
-                if row_change == 0 and col_change == 0:
+        for dr in (-1, 0, 1):
+            for dc in (-1, 0, 1):
+                if dr == 0 and dc == 0:
                     continue
 
-                new_row = row + row_change
-                new_col = col + col_change
+                r = row + dr
+                c = col + dc
 
-                if 0 <= new_row < self.rows and 0 <= new_col < self.cols:
-                    if self.grid[new_row][new_col].alive:
+                if 0 <= r < self.rows and 0 <= c < self.cols:
+                    if self.grid[r][c].alive:
                         count += 1
 
         return count
 
     def next_state(self, row, col):
-        alive_neighbors = self.count_neighbors(row, col)
-        cell = self.grid[row][col]
+        neighbors = self.count_neighbors(row, col)
 
-        if cell.alive:
-            if alive_neighbors < 2 or alive_neighbors > 3:
-                return False
-            else:
-                return True
-        else:
-            if alive_neighbors == 3:
-                return True
-            else:
-                return False
+        if self.grid[row][col].alive:
+            return neighbors in (2, 3)
+
+        return neighbors == 3
 
     def next_generation(self):
-        next_grid = []
+        self.grid = [
+            [Cell(self.next_state(r, c)) for c in range(self.cols)]
+            for r in range(self.rows)
+        ]
 
-        for row in range(self.rows):
-            new_row = []
+    def snapshot(self):
+        return tuple(
+            tuple(cell.alive for cell in row)
+            for row in self.grid
+        )
 
-            for col in range(self.cols):
-                new_alive = self.next_state(row, col)
-                new_cell = Cell(new_alive)
-                new_row.append(new_cell)
+    def count_alive(self):
+        return sum(
+            cell.alive
+            for row in self.grid
+            for cell in row
+        )
 
-            next_grid.append(new_row)
+    def run(self, generations=100, speed=0.1):
+        seen = {self.snapshot(): 0}
 
-        self.grid = next_grid
+        for generation in range(generations + 1):
+            self.display(generation)
+            time.sleep(speed)
 
-    def run(self, generations):
-        print("\033[2J\033[H", end="")
-
-        for generation in range(generations):
-            print("\033[H", end="")
-
-            self.display(generation + 1)
+            if self.count_alive() == 0:
+                print("\nAll cells died.")
+                return
 
             self.next_generation()
 
-            time.sleep(0.2)
+            current = self.snapshot()
+
+            if current in seen:
+                period = generation + 1 - seen[current]
+
+                if period == 1:
+                    print("\nStill life detected.")
+                else:
+                    print(f"\nOscillator detected - period {period}.")
+
+                return
+
+            seen[current] = generation + 1
 
 
-game = Game(15, 15)
+R_PENTOMINO = [
+    (0, 1),
+    (0, 2),
+    (1, 0),
+    (1, 1),
+    (2, 1)
+]
 
-game.set_cell(1, 2)
-game.set_cell(2, 3)
-game.set_cell(3, 1)
-game.set_cell(3, 2)
-game.set_cell(3, 3)
 
-game.run(200)
+game = Game(15, 25)
+
+game.add_pattern(
+    R_PENTOMINO,
+    6,
+    10
+)
+
+game.run(100, 0.1)
