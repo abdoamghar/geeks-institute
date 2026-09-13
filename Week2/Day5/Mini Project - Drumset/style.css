@@ -1,0 +1,71 @@
+body {
+    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background-image: url("./sounds/bg-image.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.container > div {
+    box-sizing: border-box;
+    border: 3px solid #ffd84d;
+    width: 100px;
+    max-width: 100px;
+    flex: 1 1 0;
+    aspect-ratio: 1;
+    min-width: 0;
+    padding: 8px;
+    background-color: rgba(10, 10, 10, 0.62);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    text-align: center;
+    text-shadow: 0 2px 4px black;
+    cursor: pointer;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.container > div:hover {
+    background-color: rgba(10, 10, 10, 0.78);
+    transform: scale(1.05);
+}
+
+.container > div.active {
+    transform: scale(1.12);
+    box-shadow: 0 0 20px 6px yellow;
+}
+
+h1 {
+    margin: 0;
+    color: #fff4b0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+p {
+    margin: 10px 0 0;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}

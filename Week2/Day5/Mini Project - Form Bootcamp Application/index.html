@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NovaCode Bootcamp Application</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<style>
+		body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+		input:not([type="radio"]):not([type="checkbox"]), select, textarea { width: 100%; border: 1px solid #dbe3e5; border-radius: .65rem; padding: .7rem .8rem; background: #fff; }
+		input:not([type="radio"]):not([type="checkbox"]), select { height: 2.75rem; }
+		#track { padding-left: 1rem; }
+		#motivation { padding-left: 1rem; }
+		input:focus, select:focus, textarea:focus { outline: 2px solid #0f766e; outline-offset: 1px; }
+	</style>
+</head>
+<body class="min-h-screen bg-[#f3f6f5] text-slate-800">
+	<header class="border-b border-slate-200 bg-white">
+		<nav class="mx-auto flex max-w-6xl items-center justify-between px-5 py-5" aria-label="Main navigation">
+			<a href="#top" class="flex items-center gap-2.5 text-xl font-bold tracking-tight text-slate-900">
+				<img src="icon/code.png" alt="" class="h-7 w-7 rounded-md object-cover">
+				<span>Nova<span class="text-teal-700">Code</span></span>
+			</a>
+			<span class="hidden text-sm font-medium text-slate-500 sm:block">Full-Stack Bootcamp <span class="text-slate-300">/</span> 2026 cohort</span>
+		</nav>
+	</header>
+
+	<main id="top" class="mx-auto grid max-w-6xl items-start gap-8 px-5 py-8 md:grid-cols-[.85fr_1.15fr] md:gap-10 md:py-12">
+		<aside class="flex flex-col justify-between rounded-2xl bg-slate-900 p-7 text-white sm:p-10 md:sticky md:top-6">
+			<div>
+				<p class="mb-5 inline-flex rounded-full bg-teal-900/60 px-3 py-1 text-xs font-semibold tracking-wide text-teal-200">APPLICATIONS OPEN</p>
+				<h1 class="max-w-lg text-4xl font-bold leading-tight tracking-tight sm:text-5xl">Build the skills.<br><span class="text-teal-300">Change your story.</span></h1>
+				<p class="mt-5 max-w-md leading-7 text-slate-300">Tell us where you are and where you want to go. No computer science degree required—just curiosity and the courage to begin.</p>
+				<div class="mt-9 grid grid-cols-3 gap-3 border-y border-white/10 py-5">
+					<div><strong class="block text-2xl">12</strong><span class="text-sm text-slate-400">Weeks</span></div>
+					<div><strong class="block text-2xl">24</strong><span class="text-sm text-slate-400">Seats</span></div>
+					<div><strong class="block text-2xl">100%</strong><span class="text-sm text-slate-400">Hands-on</span></div>
+				</div>
+			</div>
+			<div class="mt-8 rounded-xl bg-white/5 p-5">
+				<p class="font-semibold text-teal-200">A quick tip</p>
+				<p class="mt-1 text-sm leading-6 text-slate-300">Take your time with the questions. A few honest sentences are all we need.</p>
+			</div>
+		</aside>
+
+		<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
+			<div class="mb-7">
+				<p class="text-xs font-bold tracking-[.16em] text-teal-700">YOUR APPLICATION</p>
+				<h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900">Let's get to know you</h2>
+				<div class="mt-5 flex items-center justify-between text-sm text-slate-500">
+					<label for="progress">Application progress</label><span id="progress-text">0%</span>
+				</div>
+				<progress id="progress" value="0" max="100" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="mt-2 h-2 w-full accent-teal-700">0%</progress>
+				<div hidden id="application-received" class="mt-6 rounded-2xl border border-teal-100 bg-teal-50 p-6 text-center sm:p-8">
+					<img src="icon/tick.png" alt="" class="mx-auto mb-4 h-14 w-14 rounded-xl">
+					<p class="text-xs font-bold tracking-[.16em] text-teal-700">APPLICATION RECEIVED</p>
+					<h2 id="success-heading" class="mt-2 text-2xl font-bold tracking-tight text-slate-900">You're in!</h2>
+					<p id="success-details" class="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-600">Thanks for applying. We'll review your answers and contact you within 3 business days.</p>
+					<button type="button" id="new-application" class="mt-6 rounded-lg bg-teal-700 px-5 py-3 font-semibold text-white transition hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2">Submit another application</button>
+				</div>
+			</div>
+
+			<form class="space-y-8">
+				<section aria-labelledby="about-heading">
+					<div class="mb-5 border-b border-slate-100 pb-3">
+						<h3 id="about-heading" class="font-semibold text-slate-900">1. About you</h3>
+						<p class="mt-1 text-sm text-slate-500">Start with the essentials.</p>
+					</div>
+					<div class="grid gap-4 sm:grid-cols-2">
+						<div><label for="full-name" class="mb-1.5 block text-sm font-medium">Full name <span class="text-teal-700">*</span></label><input type="text" id="full-name" name="full-name" autocomplete="name" placeholder="Your name" minlength="2" maxlength="60" required><small id="full-name-error" class="text-red-500"></small></div>
+						<div><label for="email" class="mb-1.5 block text-sm font-medium">Email address <span class="text-teal-700">*</span></label><input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" required><small id="email-error" class="text-red-500"></small></div>
+						<div><label for="phone" class="mb-1.5 block text-sm font-medium">Phone number <span class="text-teal-700">*</span></label><input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="Your phone number" pattern="[+0-9 ()\x2D]{8,20}" required><small id="phone-error" class="text-red-500"></small></div>
+						<div>
+							<label for="track" class="mb-1.5 block text-sm font-medium">Preferred track <span class="text-teal-700">*</span></label>
+							<div class="relative">
+								<select name="track" id="track" required class="appearance-none bg-slate-50">
+									<option value="" selected disabled>Choose a track</option>
+									<option value="Full-Stack JavaScript">Full-Stack JavaScript</option><option value="Front-End Development">Front-End Development</option><option value="Back-End Development">Back-End Development</option>
+								</select>
+								<svg class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-teal-700" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								<small id="track-error" class="text-red-500"></small>
+							</div>
+						</div>
+						<div class="sm:col-span-2"><label for="city" class="mb-1.5 block text-sm font-medium">City <span class="text-teal-700">*</span></label><input type="text" id="city" name="city" autocomplete="address-level2" placeholder="Where are you based?" required><small id="city-error" class="text-red-500"></small></div>
+					</div>
+				</section>
+
+				<section aria-labelledby="starting-heading">
+					<div class="mb-5 border-b border-slate-100 pb-3">
+						<h3 id="starting-heading" class="font-semibold text-slate-900">2. Your starting point</h3>
+						<p class="mt-1 text-sm text-slate-500">There is no wrong answer here.</p>
+					</div>
+					<fieldset id="experience">
+						<legend class="mb-2 text-sm font-medium">Coding experience <span class="text-teal-700">*</span></legend>
+						<div class="grid grid-cols-3 gap-2">
+							<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-3 text-sm hover:border-teal-600"><input type="radio" id="beginner" name="experience" value="beginner" required class="accent-teal-700">Beginner</label>
+							<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-3 text-sm hover:border-teal-600"><input type="radio" id="explorer" name="experience" value="explorer" class="accent-teal-700">Explorer</label>
+							<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-3 text-sm hover:border-teal-600"><input type="radio" id="builder" name="experience" value="builder" class="accent-teal-700">Builder</label>
+							<small id="experience-error" class="text-red-500"></small>
+						</div>
+					</fieldset>
+					<div class="mt-4">
+						<label for="skill-input" class="mb-1.5 block text-sm font-medium">Skills you already have</label>
+						<div class="flex gap-2">
+							<input type="text" id="skill-input" name="skills" placeholder="e.g. HTML" class="min-w-0 flex-1">
+							<button type="button" id="add-skill" class="h-11 shrink-0 rounded-lg border border-teal-700 px-4 font-medium text-teal-700 transition hover:bg-teal-50">Add</button>
+						</div>
+						<p class="mt-1.5 text-xs text-slate-400">Optional. Enter one skill at a time.</p>
+						<ul id="skills-list" class="mt-3 flex flex-wrap gap-2"></ul>
+					</div>
+				</section>
+
+				<section aria-labelledby="motivation-heading">
+					<div class="mb-5 border-b border-slate-100 pb-3">
+						<div class="flex items-center justify-between gap-4">
+							<h3 id="motivation-heading" class="font-semibold text-slate-900">3. Your motivation</h3>
+							<span id="character-count" class="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold tabular-nums text-slate-500">0 / 400</span>
+						</div>
+						<p class="mt-1 text-sm text-slate-500">A few honest sentences are enough.</p>
+					</div>
+					<label for="motivation" class="mb-1.5 block text-sm font-medium">Why do you want to join us? <span class="text-teal-700">*</span></label>
+					<textarea name="motivation" id="motivation" rows="4" minlength="40" maxlength="400" placeholder="Tell us what you hope to learn and build..." required></textarea>
+					<small id="motivation-error" class="text-red-500"></small>
+					<div class="mt-4"><label for="portfolio" class="mb-1.5 block text-sm font-medium">Portfolio or GitHub <span class="font-normal text-slate-400">(optional)</span></label><input type="url" id="portfolio" name="portfolio" placeholder="https://github.com/username"><small id="portfolio-error" class="text-red-500"></small></div>
+				</section>
+
+				<div class="border-t border-slate-100 pt-5">
+					<label class="flex cursor-pointer items-start gap-3 text-sm leading-6 text-slate-600"><input type="checkbox" id="terms" name="terms" required class="mt-1 accent-teal-700"><span>I confirm that this information is accurate and I am ready to commit to the bootcamp schedule. <span class="text-teal-700">*</span></span></label>
+					<small id="terms-error" class="text-red-500"></small>
+					<button type="submit" class="mt-5 w-full rounded-lg bg-teal-700 px-5 py-3 font-semibold text-white transition hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2">Send my application <span aria-hidden="true">→</span></button>
+					<p class="mt-3 text-center text-xs text-slate-400">We'll only use your details to review your application.</p>
+				</div>
+			</form>
+		</div>
+	</main>
+
+	<footer class="mx-auto max-w-6xl px-5 pb-8 text-center text-xs text-slate-400">Built for learning HTML, Tailwind CSS, DOM events, and form validation.</footer>
+	<script src="script.js"></script>
+</body>
+</html>
