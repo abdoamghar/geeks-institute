@@ -1,0 +1,19 @@
+{
+  "name": "exercise-xp-ninja-quiz-game",
+  "version": "1.0.0",
+  "description": "Express quiz game exercise",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "express",
+    "quiz",
+    "node"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
