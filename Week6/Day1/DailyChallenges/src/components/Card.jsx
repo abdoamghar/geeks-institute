@@ -1,10 +1,9 @@
-function Card({ icon: Icon, title, description, tone, index }) {
+function Card({ icon, title, description }) {
   return (
-    <article className={`feature-card tone-${tone}`}>
-      <div className="card-topline"><span className="card-number">0{index} / LITTLE THINGS</span><span className="card-icon"><Icon size={22} strokeWidth={1.7} aria-hidden="true" /></span></div>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <span className="card-decoration" aria-hidden="true">✳</span>
+    <article className="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm">
+      <div className="mb-4 flex justify-center text-blue-600">{icon}</div>
+      <h3 className="mb-2 text-xl font-bold">{title}</h3>
+      <p className="text-gray-600">{description}</p>
     </article>
   )
 }
