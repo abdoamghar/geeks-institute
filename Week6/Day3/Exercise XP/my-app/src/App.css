@@ -1,0 +1,180 @@
+.exercise {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: left;
+}
+
+.simulation {
+  margin-top: 20px;
+  padding: 12px;
+  border-top: 1px solid #ccc;
+}
+
+.counter {
+  margin: 8px;
+  padding: 4px 10px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.error-message {
+  margin: 12px 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+.modal-background {
+  position: fixed;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-body {
+  width: min(440px, calc(100% - 48px));
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  color: #111;
+}
+
+.modal-body details {
+  margin: 4px 0;
+}
+
+.clock-exercise {
+  color: #f4f5f7;
+  background: #292d35;
+}
+
+.clock {
+  position: relative;
+  height: 540px;
+  overflow: hidden;
+  background: #292d35;
+}
+
+.clock-year,
+.clock-month {
+  position: absolute;
+  z-index: 2;
+  font-size: 22px;
+}
+
+.clock-year {
+  top: 16px;
+  left: 16px;
+}
+
+.clock-month {
+  right: 16px;
+  bottom: 12px;
+}
+
+.clock-face {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.clock-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.clock-ring-rotator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform: rotate(var(--rotation));
+  transition: transform 0.8s ease;
+}
+
+.clock-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #8a8d94;
+  font-size: 11px;
+  white-space: nowrap;
+  transform: rotate(var(--angle)) translateY(var(--radius)) rotate(90deg);
+  transform-origin: 0 0;
+}
+
+.clock-label.current {
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.65);
+}
+
+.ring-months {
+  --radius: -54px;
+}
+
+.ring-weekdays {
+  --radius: -91px;
+}
+
+.ring-days {
+  --radius: -130px;
+}
+
+.ring-hours {
+  --radius: -169px;
+}
+
+.ring-minutes {
+  --radius: -207px;
+}
+
+.ring-seconds {
+  --radius: -244px;
+}
+
+@media (max-width: 600px) {
+  .clock {
+    height: 440px;
+  }
+
+  .ring-months {
+    --radius: -42px;
+  }
+
+  .ring-weekdays {
+    --radius: -72px;
+  }
+
+  .ring-days {
+    --radius: -103px;
+  }
+
+  .ring-hours {
+    --radius: -134px;
+  }
+
+  .ring-minutes {
+    --radius: -165px;
+  }
+
+  .ring-seconds {
+    --radius: -195px;
+  }
+}

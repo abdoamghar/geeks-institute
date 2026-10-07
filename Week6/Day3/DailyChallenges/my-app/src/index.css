@@ -1,0 +1,16 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #111;
+  background: white;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-width: 320px;
+  margin: 4px;
+}
+
+#root {
+  width: 100%;
+}

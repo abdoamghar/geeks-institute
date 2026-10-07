@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #111;
+  background: #fff;
+}
+
+#root {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.3;
+}
+
+button {
+  padding: 6px 10px;
+  font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 16px;
+  }
+}
