@@ -1,0 +1,7 @@
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: #fff;
+  font-family: Arial, sans-serif;
+}

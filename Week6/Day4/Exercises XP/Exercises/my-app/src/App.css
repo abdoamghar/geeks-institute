@@ -1,0 +1,117 @@
+.exercise-card {
+  width: min(100% - 32px, 480px);
+  margin: 64px auto;
+  padding: 0 12px 8px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+}
+
+.exercise-card h1 {
+  margin: 0;
+  color: #212529;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.post-list {
+  padding: 0 12px 16px;
+  text-align: center;
+}
+
+.post-list h1 {
+  margin-bottom: 24px;
+}
+
+.post-list article + article {
+  margin-top: 24px;
+}
+
+.post-list h2 {
+  margin-bottom: 20px;
+  color: #212529;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.post-list p {
+  color: #212529;
+}
+
+.data-examples {
+  padding: 0 12px 16px;
+}
+
+.data-example {
+  margin-bottom: 64px;
+  text-align: left;
+}
+
+.data-example h2 {
+  margin-bottom: 24px;
+  color: #212529;
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.data-example > ul,
+.skills-card,
+.experiences-card {
+  padding: 8px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+}
+
+.data-example > ul {
+  padding-left: 40px;
+  font-size: 1.25rem;
+}
+
+.skills-card h3 {
+  color: #212529;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.skills-card ul {
+  margin-bottom: 8px;
+}
+
+.experience {
+  margin-bottom: 24px;
+}
+
+.experience:last-child {
+  margin-bottom: 0;
+}
+
+.experience img {
+  display: block;
+  width: 190px;
+  height: 190px;
+  margin-bottom: 8px;
+}
+
+.experience h3,
+.experience p {
+  margin: 12px 0;
+  color: #212529;
+  font-size: 0.75rem;
+}
+
+.experience h3 {
+  font-weight: 600;
+}
+
+.post-data {
+  padding: 8px;
+  text-align: left;
+}
+
+.post-data [role='alert'] {
+  margin-top: 12px;
+  color: #b02a37;
+}
