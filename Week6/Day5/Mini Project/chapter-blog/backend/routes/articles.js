@@ -1,31 +1,47 @@
 import { Router } from 'express';
-import stories from '../db/seed.js';
 import { authenticateToken, requireAdmin } from '../middleware/auth.js';
+import { getDatabase } from '../db/mongodb.js';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.status(200).json(stories);
+router.get('/', async (req, res) => {
+  const articles = await getDatabase()
+    .collection('articles')
+    .find({}, { projection: { _id: 0 } })
+    .sort({ id: 1 })
+    .toArray();
+
+  res.status(200).json(articles);
 });
 
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
-  const story = stories.find((s) => s.id === parseInt(id));
+router.get('/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  const story = await getDatabase()
+    .collection('articles')
+    .findOne({ id }, { projection: { _id: 0 } });
+
   if (!story) {
     return res.status(404).json({ message: 'Story not found' });
   }
+
   res.status(200).json(story);
 });
 
-router.post('/', authenticateToken, requireAdmin, (req, res) => {
+router.post('/', authenticateToken, requireAdmin, async (req, res) => {
   const { title, excerpt, image, imageAlt, author, date, category, chapter } = req.body;
 
   if (!title || !excerpt || !image || !imageAlt || !author || !date || !category || !chapter) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
+  const articlesCollection = getDatabase().collection('articles');
+  const latestArticle = await articlesCollection.findOne(
+    {},
+    { sort: { id: -1 }, projection: { id: 1 } }
+  );
+
   const newStory = {
-    id: stories.length > 0 ? Math.max(...stories.map((s) => s.id)) + 1 : 1,
+    id: latestArticle ? latestArticle.id + 1 : 1,
     title,
     excerpt,
     image,
@@ -33,46 +49,51 @@ router.post('/', authenticateToken, requireAdmin, (req, res) => {
     author,
     date,
     category,
-    chapter
+    chapter,
   };
-  stories.push(newStory);
+
+  await articlesCollection.insertOne(newStory);
   res.status(201).json(newStory);
 });
 
-router.patch('/:id', authenticateToken, requireAdmin, (req, res) => {
-    const id = Number(req.params.id);
-    const index = stories.findIndex((s) => s.id === id);
+router.patch('/:id', authenticateToken, requireAdmin, async (req, res) => {
+  const id = Number(req.params.id);
+  const { title, excerpt, image, category, chapter } = req.body;
 
-    if (index === -1) {
-        return res.status(404).json({ message: 'Article not found' });
-    }
+  if (!title || !excerpt || !image || !category || !chapter) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
 
-    const { title, excerpt, image, category, chapter } = req.body;
-    const newobj = {title, excerpt, image, category, chapter}
-    
+  const articlesCollection = getDatabase().collection('articles');
+  const result = await articlesCollection.updateOne(
+    { id },
+    { $set: { title, excerpt, image, category, chapter } }
+  );
 
-    if (!title || !excerpt || !image || !category || !chapter) {
-        return res.status(400).json({ message: 'All fields are required' });
-    }
+  if (result.matchedCount === 0) {
+    return res.status(404).json({ message: 'Article not found' });
+  }
 
-    stories[index] = {
-        ...stories[index], ...newobj
-    }
-
-    res.status(200).json(stories[index]);
+  const updatedArticle = await articlesCollection.findOne(
+    { id },
+    { projection: { _id: 0 } }
+  );
+  res.status(200).json(updatedArticle);
 });
 
-router.delete("/:id", authenticateToken, requireAdmin, (req, res) => {
-    const id = Number(req.params.id)
-    const index = stories.findIndex((story) => story.id === id)
+router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
+  const id = Number(req.params.id);
+  const articlesCollection = getDatabase().collection('articles');
+  const deletedArticle = await articlesCollection.findOneAndDelete(
+    { id },
+    { projection: { _id: 0 } }
+  );
 
-    if (index === -1) {
-        return res.status(404).json({message: "Article not found"})
-    }
+  if (!deletedArticle) {
+    return res.status(404).json({ message: 'Article not found' });
+  }
 
-    const deletedArticle = stories.splice(index, 1)[0]
-    res.status(200).json(deletedArticle)
-
-})
+  res.status(200).json(deletedArticle);
+});
 
 export default router;

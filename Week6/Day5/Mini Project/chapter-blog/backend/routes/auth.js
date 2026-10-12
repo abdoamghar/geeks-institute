@@ -1,15 +1,21 @@
 import { Router } from 'express';
-import accounts from '../db/connect.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { authenticateToken } from '../middleware/auth.js';
+import { getDatabase } from '../db/mongodb.js';
 
 const router = Router();
 
 router.post('/', async (req, res) => {
   const { email, password } = req.body;
 
-  const account = accounts.find((account) => account.email === email);
+  if (typeof email !== 'string' || typeof password !== 'string') {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+
+  const account = await getDatabase()
+    .collection('accounts')
+    .findOne({ email });
 
   if (!account) {
     return res.status(401).json({ message: 'Invalid credentials' });
@@ -44,8 +50,10 @@ router.post('/', async (req, res) => {
   });
 });
 
-router.get('/me', authenticateToken, (req, res) => {
-  const account = accounts.find((account) => account.email === req.user.email);
+router.get('/me', authenticateToken, async (req, res) => {
+  const account = await getDatabase()
+    .collection('accounts')
+    .findOne({ email: req.user.email });
 
   if (!account) {
     return res.status(401).json({ message: 'Account not found' });

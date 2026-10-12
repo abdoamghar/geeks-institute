@@ -11,7 +11,6 @@ function EditPage() {
 
     const { mutate } = useSWRConfig();
     const { id } = useParams();
-    const [article, setArticle] = useState(null);
     const [idExists, setIdExists] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -32,7 +31,6 @@ function EditPage() {
                 }
 
                 const fetchedArticle = await response.json();
-                setArticle(fetchedArticle);
                 setTitle(fetchedArticle.title || '');
                 setDescription(fetchedArticle.excerpt || '');
                 setStory(fetchedArticle.chapter || '');

@@ -16,7 +16,7 @@ A small full-stack blog application built with React, Vite, Tailwind CSS, and an
 
 ```text
 chapter-blog/
-├── backend/    # Express API, authentication, and in-memory seed data
+├── backend/    # Express API, authentication, and seed reference data
 └── frontend/   # React application built with Vite
 ```
 
@@ -26,9 +26,11 @@ chapter-blog/
 
 ## Setup
 
-### 1. Configure the backend
+### 1. Configure MongoDB Atlas and the backend
 
-From the project root, install backend dependencies:
+Create a MongoDB Atlas cluster, create a database user, and allow your development IP address in Atlas Network Access. Copy the application connection string from Atlas and replace its username, password, and cluster placeholders.
+
+From the project root, install backend dependencies and create the local environment file:
 
 ```powershell
 cd backend
@@ -36,7 +38,7 @@ npm install
 Copy-Item .env.example .env
 ```
 
-Open `backend/.env` and replace the example `JWT_SECRET` with a long, random secret. Keep `.env` private; do not commit it. The `.env.example` file documents the required variables without containing a real secret.
+Open `backend/.env` and set `MONGODB_URI` to your private Atlas connection string. The example URI uses the database name `mydatabase`; the app uses the database name included in your URI. Also replace the example `JWT_SECRET` with a long, random secret. Keep `.env` private; do not commit it. The `.env.example` file documents the required variables without containing real credentials.
 
 The backend uses these environment variables:
 
@@ -44,6 +46,7 @@ The backend uses these environment variables:
 | --- | --- |
 | `PORT` | Port the API server listens on (the example uses `3000`) |
 | `JWT_SECRET` | Secret used to sign and verify login tokens |
+| `MONGODB_URI` | MongoDB connection string, including the database name |
 
 ### 2. Install frontend dependencies
 
@@ -90,11 +93,13 @@ The frontend and backend are configured for local development on ports `5173` an
 
 ## Demo accounts
 
-Development accounts are defined in `backend/db/connect.js`. Their passwords are stored as bcrypt hashes. Use the project’s configured credentials when testing; do not reuse real passwords in this demo project.
+Development account seed data is in `backend/db/accountSeed.js`. Passwords are stored as bcrypt hashes. Use the project’s configured credentials when testing; do not reuse real passwords in this demo project.
 
-## Data storage note
+## Database storage
 
-Articles are currently stored in memory using `backend/db/seed.js`. New, edited, and deleted articles are not saved to a database and will reset to the seed data when the backend restarts. SWR caches fetched data in the running frontend; it is not persistent storage.
+On backend startup, the app connects to MongoDB but does not insert seed data. The files `backend/db/seed.js` and `backend/db/accountSeed.js` are retained as reference data; the six articles and two accounts have already been added to the configured database. Articles and accounts are stored in separate `articles` and `accounts` collections.
+
+New, edited, and deleted articles are saved in MongoDB. SWR caches fetched data in the running frontend, but MongoDB is the persistent storage.
 
 ## Useful commands
 

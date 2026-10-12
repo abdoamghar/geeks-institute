@@ -1,3 +1,4 @@
+// Demo accounts inserted into MongoDB when the account collection is empty.
 const accounts = [
   {
     email: 'admin@gmail.com',
