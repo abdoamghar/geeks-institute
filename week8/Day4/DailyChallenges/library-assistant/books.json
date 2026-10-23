@@ -1,0 +1,5 @@
+[
+  {"book_id": "B001", "title": "Python Basics", "available_copies": 3},
+  {"book_id": "B002", "title": "Introduction to AI", "available_copies": 0},
+  {"book_id": "B003", "title": "Learning Databases", "available_copies": 2}
+]
