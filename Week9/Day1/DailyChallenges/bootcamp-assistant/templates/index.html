@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootcamp Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+<body>
+  <!-- Main page area that contains the chat app. -->
+  <main class="page">
+    <section class="assistant" aria-labelledby="page-title">
+      <!-- App title and the button for starting over. -->
+      <header class="assistant__header">
+        <p class="eyebrow">Your learning companion</p>
+        <h1 id="page-title">Bootcamp Assistant</h1>
+        <p>Ask a question about your bootcamp.</p>
+        <button id="new-session" class="new-session" type="button">New conversation</button>
+      </header>
+
+      <!-- JavaScript adds each visitor and assistant message here. -->
+      <div id="conversation" class="conversation" role="log" aria-live="polite">
+        <p class="message message--assistant">
+          Hi! Ask me about enrollment, schedules, preparation, or support.
+        </p>
+      </div>
+
+      <!-- Visitor questions are sent to Flask when this form is submitted. -->
+      <form id="chat-form" class="chat-form">
+        <label class="sr-only" for="message-input">Your question</label>
+        <input
+          id="message-input"
+          name="message"
+          type="text"
+          placeholder="Type your question..."
+          autocomplete="off"
+          required
+        >
+        <button type="submit">Send</button>
+      </form>
+
+      <!-- These messages show whether the app is working or had an error. -->
+      <p id="loading" class="loading" role="status" hidden>Thinking...</p>
+      <p id="status" class="status" role="alert"></p>
+    </section>
+  </main>
+</body>
+</html>
