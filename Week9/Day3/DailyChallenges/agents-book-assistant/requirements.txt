@@ -1,0 +1,7 @@
+PyMuPDF
+langchain-text-splitters
+openai
+Flask
+qdrant-client
+mongoengine
+python-dotenv

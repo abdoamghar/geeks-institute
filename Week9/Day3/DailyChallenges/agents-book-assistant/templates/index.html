@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book Assistant</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #17233b;
+            background: #f3f6fb;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 32px 18px;
+            background:
+                radial-gradient(ellipse at 10% 0%, #e0eafe 0, transparent 38%),
+                #f3f6fb;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 820px);
+            height: min(860px, calc(100vh - 64px));
+            min-height: 540px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 1px solid #e1e7f0;
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 24px 70px #263b6017;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 22px 26px;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .logo {
+            display: grid;
+            width: 44px;
+            height: 44px;
+            place-items: center;
+            border-radius: 14px;
+            background: #e9efff;
+            font-size: 22px;
+        }
+
+        h1 { margin: 0; font-size: 17px; }
+        .subtitle { margin: 4px 0 0; color: #758198; font-size: 13px; }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-left: auto;
+            color: #66748c;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #39b980;
+        }
+
+        .messages {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+            padding: 28px;
+        }
+
+        .message {
+            max-width: min(82%, 620px);
+            padding: 13px 16px;
+            border-radius: 17px;
+            font-size: 14px;
+            line-height: 1.65;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        .assistant {
+            align-self: flex-start;
+            border: 1px solid #edf0f5;
+            border-bottom-left-radius: 5px;
+            background: #f7f8fb;
+        }
+
+        .user {
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+            background: #365de7;
+            color: #fff;
+        }
+
+        .welcome-title { margin: 0 0 5px; font-size: 15px; font-weight: 650; }
+        .welcome-copy { margin: 0; color: #69768d; }
+
+        .composer-wrap {
+            padding: 18px 24px 22px;
+            border-top: 1px solid #edf0f5;
+            background: #fff;
+        }
+
+        .composer {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            padding: 8px;
+            border: 1px solid #dfe5ef;
+            border-radius: 16px;
+            background: #fff;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .composer:focus-within {
+            border-color: #8da6ff;
+            box-shadow: 0 0 0 3px #365de714;
+        }
+
+        textarea {
+            flex: 1;
+            min-height: 42px;
+            max-height: 130px;
+            resize: vertical;
+            padding: 11px 10px;
+            border: 0;
+            outline: 0;
+            color: #17233b;
+            font: inherit;
+            font-size: 14px;
+        }
+
+        textarea::placeholder { color: #9aa5b7; }
+
+        button {
+            min-width: 82px;
+            height: 42px;
+            border: 0;
+            border-radius: 11px;
+            background: #365de7;
+            color: #fff;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover:not(:disabled) { background: #294dce; }
+        button:disabled { cursor: wait; opacity: .65; }
+
+        .hint {
+            margin: 10px 0 0;
+            color: #98a2b3;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .name-dialog {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            display: grid;
+            place-items: center;
+            padding: 18px;
+            background: #17233b66;
+        }
+
+        .name-dialog[hidden] { display: none; }
+
+        .name-card {
+            width: min(100%, 380px);
+            padding: 26px;
+            border: 1px solid #e1e7f0;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 24px 70px #17233b33;
+        }
+
+        .name-card h2 { margin: 0 0 8px; font-size: 20px; }
+        .name-card p { margin: 0 0 18px; color: #69768d; font-size: 14px; line-height: 1.5; }
+        .name-card label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 600; }
+        .name-card input {
+            width: 100%;
+            height: 44px;
+            margin-bottom: 12px;
+            padding: 0 12px;
+            border: 1px solid #dfe5ef;
+            border-radius: 10px;
+            outline: 0;
+            font: inherit;
+        }
+        .name-card input:focus { border-color: #8da6ff; }
+        .name-actions { display: flex; gap: 10px; }
+        .name-actions button { flex: 1; }
+        .name-actions .guest-button { border: 1px solid #dfe5ef; background: #fff; color: #526078; }
+        .name-actions .guest-button:hover { background: #f7f8fb; }
+
+        @media (max-width: 600px) {
+            body { padding: 0; }
+            .app {
+                width: 100%;
+                height: 100vh;
+                min-height: 460px;
+                border: 0;
+                border-radius: 0;
+            }
+            .header { padding: 18px; }
+            .messages { padding: 22px 16px; }
+            .composer-wrap { padding: 14px 14px 18px; }
+            .message { max-width: 90%; }
+        }
+    </style>
+</head>
+<body>
+    <main class="app">
+        <header class="header">
+            <div class="logo" aria-hidden="true">📚</div>
+            <div>
+                <h1>Book Assistant</h1>
+                <p class="subtitle" id="subtitle">Ask a question and explore your book</p>
+            </div>
+            <div class="status"><span class="status-dot"></span>Ready to help</div>
+        </header>
+
+        <section class="messages" id="messages" aria-live="polite" aria-label="Conversation">
+            <div class="message assistant">
+                <p class="welcome-title">Hello! What would you like to know?</p>
+                <p class="welcome-copy">Ask about a topic in the book. I’ll search its pages and help you find an answer.</p>
+            </div>
+        </section>
+
+        <div class="composer-wrap">
+            <!-- Send the user's message to the Flask chat endpoint. -->
+            <form class="composer" id="chat-form">
+                <textarea id="message" name="message" rows="1" placeholder="Ask a question about the book..." aria-label="Your message" required></textarea>
+                <button id="send-button" type="submit">Send</button>
+            </form>
+            <p class="hint">Book answers are based on the content indexed in your local Qdrant database.</p>
+        </div>
+    </main>
+
+    <!-- Ask for a friendly display name; it is not used as an account password. -->
+    <div class="name-dialog" id="name-dialog" role="dialog" aria-modal="true" aria-labelledby="name-title" hidden>
+        <form class="name-card" id="name-form">
+            <h2 id="name-title">Welcome to Book Assistant</h2>
+            <p>What should I call you? Your chat history will be saved for this browser.</p>
+            <label for="visitor-name">Your name (optional)</label>
+            <input id="visitor-name" maxlength="80" autocomplete="given-name" placeholder="Enter your name">
+            <div class="name-actions">
+                <button type="submit">Continue</button>
+                <button class="guest-button" id="guest-button" type="button">Continue as guest</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("chat-form");
+        const input = document.getElementById("message");
+        const sendButton = document.getElementById("send-button");
+        const messages = document.getElementById("messages");
+        const nameDialog = document.getElementById("name-dialog");
+        const nameForm = document.getElementById("name-form");
+        const nameInput = document.getElementById("visitor-name");
+        const subtitle = document.getElementById("subtitle");
+
+        // Keep a random conversation ID in this browser; MongoDB stores its messages.
+        let conversationId = localStorage.getItem("bookAssistantConversationId");
+        if (!conversationId) {
+            conversationId = crypto.randomUUID();
+            localStorage.setItem("bookAssistantConversationId", conversationId);
+        }
+
+        let visitorName = localStorage.getItem("bookAssistantName");
+
+        function startChat(name) {
+            visitorName = name.trim() || "Guest";
+            localStorage.setItem("bookAssistantName", visitorName);
+            subtitle.textContent = `Chatting as ${visitorName}`;
+            nameDialog.hidden = true;
+            loadConversation();
+        }
+
+        async function loadConversation() {
+            try {
+                const response = await fetch(`/chat/${conversationId}`);
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || "Could not load the conversation.");
+
+                if (data.messages.length) {
+                    messages.replaceChildren();
+                    for (const item of data.messages) {
+                        addMessage(item.content, item.role);
+                    }
+                }
+            } catch (error) {
+                addMessage(error.message || "Could not load the saved conversation.", "assistant");
+            }
+        }
+
+        if (visitorName) {
+            startChat(visitorName);
+        } else {
+            nameDialog.hidden = false;
+            nameInput.focus();
+        }
+
+        nameForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            startChat(nameInput.value);
+        });
+
+        document.getElementById("guest-button").addEventListener("click", () => {
+            startChat("Guest");
+        });
+
+        // Add messages as text so user input is displayed safely.
+        function addMessage(text, role) {
+            const message = document.createElement("div");
+            message.className = `message ${role}`;
+            message.textContent = text;
+            messages.appendChild(message);
+            messages.scrollTop = messages.scrollHeight;
+            return message;
+        }
+
+        // Submit one question and show the answer returned by Flask.
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const question = input.value.trim();
+            if (!question) return;
+
+            const userMessage = addMessage(question, "user");
+            input.value = "";
+            input.disabled = true;
+            sendButton.disabled = true;
+            sendButton.textContent = "…";
+            const waitingMessage = addMessage("Searching for an answer…", "assistant");
+
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        message: question,
+                        conversation_id: conversationId,
+                        name: visitorName,
+                    }),
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "The request could not be completed.");
+                }
+
+                waitingMessage.textContent = data.answer;
+            } catch (error) {
+                userMessage.remove();
+                waitingMessage.textContent = error.message || "Could not connect to the assistant.";
+            } finally {
+                input.disabled = false;
+                sendButton.disabled = false;
+                sendButton.textContent = "Send";
+                input.focus();
+            }
+        });
+    </script>
+</body>
+</html>
